@@ -39,11 +39,11 @@ class CourseRepository {
       await _firebaseFirestore
           .collection("courses")
           .doc(id(course.id))
-          .update(courseDto.toJson());
+          .set(courseDto.toJson());
       return right(unit);
     } on PlatformException catch (e) {
       // These error codes and messages aren't in the documentation AFAIK, experiment in the debugger to find out about them.
-      if (e.message!.contains('PERMISSION_DENIED')) {
+      if (e.message!.contains('permission-denied')) {
         return left(const Failure.insufficientPermissions());
       } else {
         return left(const Failure.unexpected());
@@ -59,11 +59,11 @@ class CourseRepository {
       await _firebaseFirestore
           .collection("courses")
           .doc(id(course.id))
-          .set(courseDto.toJson());
+          .update(courseDto.toJson());
       return right(unit);
     } on PlatformException catch (e) {
       // These error codes and messages aren't in the documentation AFAIK, experiment in the debugger to find out about them.
-      if (e.message!.contains('PERMISSION_DENIED')) {
+      if (e.message!.contains('permission-denied')) {
         return left(const Failure.insufficientPermissions());
       } else {
         return left(const Failure.unexpected());
@@ -78,7 +78,7 @@ class CourseRepository {
       await _firebaseFirestore.collection("courses").doc(id(courseId)).delete();
       return right(unit);
     } on PlatformException catch (e) {
-      if (e.message!.contains('PERMISSION_DENIED')) {
+      if (e.message!.contains('permission-denied')) {
         return left(const Failure.insufficientPermissions());
       } else {
         return left(const Failure.unexpected());
