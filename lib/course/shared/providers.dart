@@ -27,7 +27,7 @@ final courseFormProvider =
 });
 
 final courseStateProvider =
-    StateNotifierProvider.autoDispose<CourseStateNotifier, Course>((ref) {
+    StateNotifierProvider<CourseStateNotifier, Course>((ref) {
   return CourseStateNotifier();
 });
 

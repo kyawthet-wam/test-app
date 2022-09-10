@@ -20,7 +20,9 @@ class CourseFormPage extends ConsumerWidget {
     final _formkey = GlobalKey<FormState>();
     ref.listen<CourseFormState>(courseFormProvider, (_, state) {
       state.maybeWhen(
-          saving: () {},
+          saving: () {
+            showLoadingFlash(context, "Saving . . . .");
+          },
           saved: () {
             showSuccessFlash(context, "Success");
             AutoRouter.of(context).pop();
@@ -71,20 +73,14 @@ class CourseFormPage extends ConsumerWidget {
                 CustomButton(
                     text: "Save",
                     onPressed: () {
-                      showLoadingFlash(context, "Saving . . . .");
-                      // showSuccessFlash(context, "Success");
-                      // showErrorFlash(context, "Error");
-                      // if (ref.watch(iconProvider) == null) {
-                      //   ref.read(errorProvider.notifier).state = true;
-                      // }
-                      // if (_formkey.currentState!.validate() == true &&
-                      //     ref.watch(errorProvider)) {
-                      //   final course = Course(
-                      //       id: DateTime.now().toString(),
-                      //       name: ref.read(courseStateProvider).name,
-                      //       icon: ref.read(courseStateProvider).icon);
-                      //   ref.read(courseFormProvider.notifier).create(course);
-                      // }
+                      if (_formkey.currentState!.validate() == true) {
+                        _formkey.currentState!.save();
+                        final course = Course(
+                            id: DateTime.now().toString(),
+                            name: ref.read(courseStateProvider).name,
+                            icon: ref.read(courseStateProvider).icon);
+                        ref.read(courseFormProvider.notifier).create(course);
+                      }
                     })
               ],
             ),
